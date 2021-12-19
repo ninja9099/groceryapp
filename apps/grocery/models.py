@@ -33,7 +33,7 @@ class GroceryItems(BaseModel):
     """
     grocery_list = models.ForeignKey(GroceryList, on_delete=models.CASCADE, related_name="grocery_items")
     name = models.CharField(max_length=255)
-    quantity = models.FloatField(default=1.)
+    quantity = models.FloatField(default=1.0)
     unit_of_measure = models.CharField(max_length=255)
     status = models.CharField(choices=GroceryItemStatus.get_choices(), default=GroceryItemStatus.Pending, max_length=20)
 
