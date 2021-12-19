@@ -1,10 +1,15 @@
 import os
+from pathlib import Path
 
-from groceryapp.settings import LOG_DIR
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+LOG_DIR = os.path.join(BASE_DIR, 'logs')
+
+if not os.path.exists(LOG_DIR):
+    os.makedirs(LOG_DIR)
 
 DEBUG = False
 ALLOWED_HOSTS = ['www.example.com']
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 
 # production database  settings
