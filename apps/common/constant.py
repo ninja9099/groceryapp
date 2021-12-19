@@ -9,4 +9,4 @@ class GlobalConstant(object):
     FieldStr = {}
     @classmethod
     def get_choices(cls):
-        return cls.FieldStr.items()
+        return list(cls.FieldStr.items())

@@ -4,6 +4,7 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
 
+from apps.grocery.filters import GroceryListFilter
 from apps.grocery.models import GroceryList, GroceryItems
 from apps.grocery.permissions import IsFriedOrOwner
 from apps.grocery.serializer import GroceryListSerializer, GroceryItemsSerializer
@@ -14,8 +15,9 @@ class GroceryListViewSet(viewsets.ModelViewSet):
     serializer_class = GroceryListSerializer
     pagination_class = LimitOffsetPagination
     permission_classes = (IsAdminUser | IsAuthenticatedOrReadOnly,)
-    filter_backends = (search_filters.SearchFilter, DjangoFilterBackend)
-    search_fields = ('user__id', 'status', 'due_date', 'reminder_interval')
+    filter_backends = [search_filters.SearchFilter, DjangoFilterBackend]
+    filterset_class = GroceryListFilter
+    search_fields = ['user__username', 'status', 'due_date', 'reminder_interval']
 
     def get_permissions(self):
         permission_classes = [IsFriedOrOwner, ]
@@ -37,6 +39,8 @@ class GroceryListViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
 
 
 class GroceryItemsViewSet(viewsets.ModelViewSet):
