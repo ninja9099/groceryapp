@@ -1,5 +1,4 @@
 import uuid
-import datetime
 
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -12,9 +11,9 @@ User = get_user_model()
 
 
 class GroceryList(BaseModel):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4())
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, related_name='grocery_lists', on_delete=models.CASCADE)
-    status= models.CharField(choices=GroceryListStatus.get_choices(),max_length=20)
+    status= models.CharField(choices=GroceryListStatus.get_choices(),max_length=20, default=GroceryListStatus.Active)
     # field for the friendly reminder of completing it in 7 days after being created or on provided date
     due_date = models.DateTimeField(default=get_seven_days_from_now())
     reminder_interval = models.CharField(choices=ReminderInterval.get_choices(), max_length=10, default=ReminderInterval.Daily)
