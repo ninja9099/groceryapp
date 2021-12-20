@@ -1,3 +1,4 @@
+from django.db.models import Case, When
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters as search_filters, status
 from rest_framework.decorators import action
@@ -12,7 +13,7 @@ from apps.grocery.serializer import GroceryListSerializer, GroceryItemsSerialize
 
 
 class GroceryListViewSet(viewsets.ModelViewSet):
-    queryset = GroceryList.objects.all()
+    queryset = GroceryList.objects.all().order_by('-created_ts')
     serializer_class = GroceryListSerializer
     pagination_class = LimitOffsetPagination
     permission_classes = (IsAdminUser | IsAuthenticatedOrReadOnly,)

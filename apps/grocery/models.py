@@ -5,7 +5,6 @@ from django.db import models
 
 from apps.common.base_model import BaseModel
 from apps.grocery.constants import GroceryListStatus, ReminderInterval, GroceryItemStatus
-from apps.grocery.functions import get_seven_days_from_now
 
 User = get_user_model()
 
@@ -16,7 +15,7 @@ class GroceryList(BaseModel):
     user = models.ForeignKey(User, related_name='grocery_lists', on_delete=models.CASCADE)
     status= models.CharField(choices=GroceryListStatus.get_choices(),max_length=20, default=GroceryListStatus.Active)
     # field for the friendly reminder of completing it in 7 days after being created or on provided date
-    due_date = models.DateTimeField(default=get_seven_days_from_now())
+    due_date = models.DateTimeField(blank=True, null=True)
     reminder_interval = models.CharField(choices=ReminderInterval.get_choices(), max_length=10, default=ReminderInterval.Daily)
 
     class Meta:
