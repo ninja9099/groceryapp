@@ -12,6 +12,7 @@ User = get_user_model()
 
 class GroceryList(BaseModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
     user = models.ForeignKey(User, related_name='grocery_lists', on_delete=models.CASCADE)
     status= models.CharField(choices=GroceryListStatus.get_choices(),max_length=20, default=GroceryListStatus.Active)
     # field for the friendly reminder of completing it in 7 days after being created or on provided date

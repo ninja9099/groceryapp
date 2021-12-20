@@ -10,7 +10,7 @@ if not os.path.exists(LOG_DIR):
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1"]
+ALLOWED_HOSTS = ["localhost"]
 
 DATABASES = {
     'default': {
