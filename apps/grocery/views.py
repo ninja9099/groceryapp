@@ -69,4 +69,6 @@ class GroceryItemsViewSet(viewsets.ModelViewSet):
 
     def update(self, request, *args, **kwargs):
         kwargs['partial'] = True
+        import pdb
+        pdb.set_trace()
         return super(GroceryItemsViewSet, self).update(request, *args, **kwargs)

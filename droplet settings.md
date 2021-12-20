@@ -138,3 +138,21 @@ sudo rm /etc/nginx/sites-enabled/default
     python manage.py migrate
     sudo supervisorctl restart grocery-app
     exit
+
+
+## front-end configs nginx
+server {
+    listen 80;
+
+    # add here the ip address of your server
+    # or a domain pointing to that ip (like example.com or www.example.com)
+    server_name 192.241.150.190;
+
+    root /home/groceryapp/grocery-front;
+    location / {
+     try_files $uri $uri/ /index.html;
+    }
+
+}
+
+sudo nano /etc/nginx/sites-available/grocery-front
