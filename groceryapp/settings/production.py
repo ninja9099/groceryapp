@@ -1,5 +1,9 @@
 import os
+import environ
 from pathlib import Path
+
+env = environ.Env()
+environ.Env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 LOG_DIR = os.path.join(BASE_DIR, 'logs')
@@ -8,7 +12,7 @@ if not os.path.exists(LOG_DIR):
     os.makedirs(LOG_DIR)
 
 DEBUG = False
-ALLOWED_HOSTS = ['www.example.com']
+ALLOWED_HOSTS = [env('ALLOWED_HOSTS')]
 
 
 
@@ -16,9 +20,9 @@ ALLOWED_HOSTS = ['www.example.com']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'groceryapp',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'NAME': env('DATABASE_NAME'),
+        'USER': env('DATABASE_USER'),
+        'PASSWORD': env('DATABASE_PASS'),
         'HOST': 'localhost',
         'PORT': ''
     }
