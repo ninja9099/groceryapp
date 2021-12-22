@@ -6,6 +6,7 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
 
+from apps.grocery.constants import GroceryItemStatus, GroceryListStatus
 from apps.grocery.filters import GroceryListFilter, GroceryItemsFilter
 from apps.grocery.models import GroceryList, GroceryItems
 from apps.grocery.permissions import IsFriedOrOwner
@@ -69,6 +70,13 @@ class GroceryItemsViewSet(viewsets.ModelViewSet):
 
     def update(self, request, *args, **kwargs):
         kwargs['partial'] = True
-        import pdb
-        pdb.set_trace()
-        return super(GroceryItemsViewSet, self).update(request, *args, **kwargs)
+        item = super(GroceryItemsViewSet, self).update(request, *args, **kwargs)
+        grocery_list_object = self.get_object().grocery_list
+        grocery_list_pending_items = grocery_list_object.grocery_items\
+            .filter(status=GroceryItemStatus.Pending).exists()
+        if not grocery_list_pending_items:
+            grocery_list_object.status = GroceryListStatus.Completed
+        elif 'status' in request.data:
+            grocery_list_object.status = GroceryListStatus.Partial
+        grocery_list_object.save()
+        return item
